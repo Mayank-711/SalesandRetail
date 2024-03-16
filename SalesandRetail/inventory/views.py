@@ -2,13 +2,13 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from .models import *
+from django.http import JsonResponse
 # Create your views here. 
 
 
 def inventory(request):
     user = request.user 
     username = user.username
-    print(username)
     if request.method=="POST":
         data=request.POST
         P_Type=data.get("typeofproduct")
@@ -25,3 +25,12 @@ def inventory(request):
 
 def Dashboard(request):
     return render(request,'inventory/dashboard.html')
+
+def SalesPage(request):
+    user = request.user 
+    username = user.username
+    producttype = Inventory.objects.filter(username=username).values('P_Type').distinct()
+    btype = Inventory.objects.filter(username=username).values('P_Brand').distinct()
+    ntype = Inventory.objects.filter(username=username).values('p_Name').distinct()
+    context = {'ptypes':producttype,'brandtypes':btype,'pnames':ntype}
+    return render(request,'inventory/sales.html',context=context)

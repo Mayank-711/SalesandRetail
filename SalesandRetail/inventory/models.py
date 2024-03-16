@@ -9,3 +9,14 @@ class Inventory(models.Model):
     P_Stock=models.IntegerField()
     R_date=models.DateField(null=True,blank=True)
     cost=models.IntegerField()
+
+class Sales(models.Model):
+    username=models.CharField(max_length=20)
+    customer_name = models.CharField(max_length=40)
+    customer_email=models.CharField(max_length=20)
+    PS_Type=models.CharField(max_length=20)
+    PS_Name=models.CharField(max_length=15)
+    PS_Brand=models.CharField(max_length=10)
+    QuantitySold=models.IntegerField()
+    PS_Date=models.DateField(null=True,blank=True)
+    SellingPrice=models.IntegerField()

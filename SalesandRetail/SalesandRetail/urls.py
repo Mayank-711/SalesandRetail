@@ -27,4 +27,5 @@ urlpatterns = [
     path('logout/',views.LogoutPage,name ='logout'),
     path('dashboard/',iviews.Dashboard,name='dashboard'),
     path('inventory/',iviews.inventory,name='inventory'),
+    path('sales/',iviews.SalesPage,name='sales'),
 ]
