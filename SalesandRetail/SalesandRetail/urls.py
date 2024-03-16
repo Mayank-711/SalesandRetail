@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from users import views
+from inventory import views as iviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,6 @@ urlpatterns = [
     path('signup/',views.SignupPage,name='signup'),
     path('dashboard/',views.HomePage,name='dashboard'),
     path('logout/',views.LogoutPage,name ='logout'),
+    path('dashboard/',iviews.Dashboard,name='dashboard'),
+    path('inventory/',iviews.Inventory,name='inventory'),
 ]
