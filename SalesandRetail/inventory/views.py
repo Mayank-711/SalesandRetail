@@ -3,7 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from .models import *
 # Create your views here. 
+
+
 def inventory(request):
+    user = request.user 
+    username = user.username
+    print(username)
     if request.method=="POST":
         data=request.POST
         P_Type=data.get("typeofproduct")
@@ -12,7 +17,7 @@ def inventory(request):
         P_Stock=data.get("stock")
         R_date=data.get("rdate")
         cost=data.get("costprice")
-        Inventory.objects.create(P_Type=P_Type,p_Name=p_Name,P_Brand=P_Brand,P_Stock=P_Stock,R_date=R_date,cost=cost) 
+        Inventory.objects.create(username=username,P_Type=P_Type,p_Name=p_Name,P_Brand=P_Brand,P_Stock=P_Stock,R_date=R_date,cost=cost) 
         return redirect("inventory")
     queryset=Inventory.objects.all()
     context={"Inventory":queryset}

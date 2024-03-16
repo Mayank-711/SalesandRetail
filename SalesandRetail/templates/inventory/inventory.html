@@ -31,6 +31,7 @@
             <label for="formGroupExampleInput2" class="form-label">Receiving Date</label>
             <input type="date" class="form-control form-control-sm" id="formGroupExampleInput2" name="rdate">
           </div>
+          <button type="submit" class="btn btn-secondary d-block mx-auto">Add Product</button>
         </div>
       </form>
     </div>
@@ -41,25 +42,27 @@
           <table class="table table-bordered table-hover">
             <thead style="background-color: gray;">
               <tr>
-                <th>P_ID</th>
                 <th>P_Name</th>
                 <th>P_Type</th>
+                <th>P_Brand</th>
                 <th>Stock</th>
                 <th>Cost</th>
-                <th>Receiving-Date</th>
+                <th>Last Receiving-Date</th>
               </tr>
             </thead>
             <tbody>
-              {% for item in Inventory %}
-              <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ item.p_Name }}</td>
-                <td>{{ item.P_Type }}</td>
-                <td>{{ item.P_Stock }}</td>
-                <td>{{ item.cost }}</td>
-                <td>{{ item.R_date }}</td>
-              </tr>
-              {% endfor %}
+                {% for item in Inventory %}
+                {% if item.username == user.username %}
+                    <tr>
+                        <td>{{ item.p_Name }}</td>
+                        <td>{{ item.P_Type }}</td>
+                        <td>{{ item.P_Brand }}</td>
+                        <td>{{ item.P_Stock }}</td>
+                        <td>{{ item.cost }}</td>
+                        <td>{{ item.R_date }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
           </table>
         </div>
