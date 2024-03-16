@@ -1,88 +1,94 @@
 {% extends 'inventory/base.html' %}
+
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    <div class="shadow p-3 mb-5 bg-white rounded" style="max-width: 600px;">
-        <h2 class="text-center mb-3">ADD SALES</h2>
-        <div class="row">
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form method="post">
+        {% csrf_token %}
+        <div class="shadow p-3 mb-5 bg-white rounded" style="max-width: 600px;">
+          <h2 class="text-center mb-3">ADD SALES</h2>
+          <div class="row">
             <div class="col">
-                <input type="text" class="form-control" placeholder="Customer Name" aria-label="First name" name="cname" style="max-width: 250px;">
+              <input type="text" class="form-control" placeholder="Customer Name" aria-label="First name" name="cname" style="max-width: 250px;">
             </div>
             <div class="col">
-                <input type="email" class="form-control" placeholder="Customer Email" aria-label="email" name="cmail">
+              <input type="email" class="form-control" placeholder="Customer Email" aria-label="email" name="cmail">
             </div>
-        </div>
-        <label for="stype" class="form-label">Type of Product</label>
-        <select id="stype" class="form-select mb-3" aria-label="Type of Product" name="stype">
+          </div>
+          <label for="stype" class="form-label">Type of Product</label>
+          <select id="stype" class="form-select mb-3" aria-label="Type of Product" name="stype">
             {% for ptype in ptypes %}
             <option value="{{ ptype.P_Type }}">{{ ptype.P_Type }}</option>
             {% endfor %}
-        </select>
-        
-        <label for="sbrand" class="form-label">Brand</label>
-        <select id="sbrand" class="form-select mb-3" aria-label="Brand" name="sbrand"> 
+          </select>
+          
+          <label for="sbrand" class="form-label">Brand</label>
+          <select id="sbrand" class="form-select mb-3" aria-label="Brand" name="sbrand"> 
             {% for btype in brandtypes %}
             <option value="{{ btype.P_Brand }}">{{ btype.P_Brand }}</option>
             {% endfor %}
-        </select>
-        
-        <label for="sname" class="form-label">Name</label>
-        <select id="sname" class="form-select mb-3" aria-label="Name" name="sname"> 
+          </select>
+          
+          <label for="sname" class="form-label">Name</label>
+          <select id="sname" class="form-select mb-3" aria-label="Name" name="sname"> 
             {% for pname in pnames %}
             <option value="{{ pname.p_Name }}">{{ pname.p_Name }}</option>
             {% endfor %}
-        </select>
-        
-        <div class="mb-3">
+          </select>
+          
+          <div class="mb-3">
             <label for="sellingDate" class="form-label">Selling Date</label>
             <input type="date" class="form-control" id="sellingDate" name="sellingDate">
-        </div>
-        
-        <div class="mb-3">
+          </div>
+          
+          <div class="mb-3">
             <label for="scount" class="form-label">Quantity</label>
             <input type="text" class="form-control form-control-sm" id="scount" placeholder="Quantity Sold" name="scount">
-        </div>
-        <div class="mb-3">
+          </div>
+          
+          <div class="mb-3">
             <label for="sellingPrice" class="form-label">Selling Price</label>
             <input type="text" class="form-control" id="sellingPrice" placeholder="Selling Price" name="sellingPrice">
+          </div>
+          
+          <button type="submit" class="btn btn-secondary d-block mx-auto">Add to Cart</button>
         </div>
-        <button type="submit" class="btn btn-secondary d-block mx-auto">Add to Cart</button>
+      </form>
     </div>
-</form>
-
-
-  <div class="col-md-9">
-    <div class="shadow p-4 mb-5 bg-white rounded" style="width: calc(100% - 300px);">
-      <h2 class="text-center mb-3">SALES STATUS</h2>
-      <div class="InventoryStatus">
-        <table class="table table-bordered table-hover">
-          <thead style="background-color: gray;">
-            <tr>
-              <th>P_Name</th>
-              <th>P_Type</th>
-              <th>P_Brand</th>
-              <th>Quantity Sold</th>
-              <th>Selling Date</th>
-            </tr>
-          </thead>
-          <tbody>
-              {% for item in Inventory %}
+    <div class="col-md-6">
+      <div class="shadow p-4 mb-5 bg-white rounded" style="width: 100%;">
+        <h2 class="text-center mb-3">SALES STATUS</h2>
+        <div class="InventoryStatus">
+          <table class="table table-bordered table-hover">
+            <thead style="background-color: gray;">
+              <tr>
+                <th>P_Name</th>
+                <th>P_Type</th>
+                <th>P_Brand</th>
+                <th>Quantity Sold</th>
+                <th>Selling Price</th>
+                <th>Selling Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in Sales %}
               {% if item.username == user.username %}
-                  <tr>
-                      <td>{{ item.p_Name }}</td>
-                      <td>{{ item.P_Type }}</td>
-                      <td>{{ item.P_Brand }}</td>
-                      <td>{{ item.P_Stock }}</td>
-                      <td>{{ item.cost }}</td>
-                      <td>{{ item.R_date }}</td>
-                  </tr>
+              <tr>
+                <td>{{ item.PS_Name }}</td>
+                <td>{{ item.PS_Type }}</td>
+                <td>{{ item.PS_Brand }}</td>
+                <td>{{ item.QuantitySold }}</td>
+                <td>{{ item.SellingPrice }}</td>
+                <td>{{ item.PS_Date }}</td>
+              </tr>
               {% endif %}
-          {% endfor %}
-          </tbody>
-        </table>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-{%endblock%}
+{% endblock %}
