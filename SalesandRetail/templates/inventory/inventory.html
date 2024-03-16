@@ -1,4 +1,64 @@
 {% extends 'inventory/base.html' %}
 {%block content%}
-<h1>Inventory</h1>
+<div class ="container">
+<div class = "row">
+<div class="shadow p-4 mb-5 bg-white rounded" style="padding-left: 50px; max-width: 300px;">
+    <h2 class="mb-4">ADD INVENTORY</h2>
+    <div class="mb-3">
+      <label for="formGroupExampleInput" class="form-label">Product Name</label>
+      <input type="text" class="form-control form-control-sm" id="formGroupExampleInput" placeholder="Name of Product" name="nameofproduct">
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label">Type</label>
+      <input type="text" class="form-control form-control-sm" id="formGroupExampleInput2" placeholder="Type Of Product" name="typeofproduct">
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label">Brand</label>
+      <input type="text" class="form-control form-control-sm" id="formGroupExampleInput2" placeholder="Brand" name="brand">
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label">Stock</label>
+      <input type="text" class="form-control form-control-sm" id="formGroupExampleInput2" placeholder="Stock" name="stock">
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label">Per Piece Cost</label>
+      <input type="text" class="form-control form-control-sm" id="formGroupExampleInput2" placeholder="Cost Price" name="costprice">
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label">Receiving Date</label>
+      <input type="date" class="form-control form-control-sm" id="formGroupExampleInput2" name="rdate">
+    </div>
+  </div>
+  
+  <div class="shadow p-4 mb-5 bg-white rounded" style="width: calc(100% - 350px); ">
+    <h2 class ="text-center mb-4" >INVENTORY STATUS</h2>
+    <div class="InventoryStatus">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th>P_ID</th>
+            <th>P_Name</th>
+            <th>P_Type</th>
+            <th>Stock</th>
+            <th>Cost</th>
+            <th>Receiving-Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in Inventory %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ item.p_Name }}</td>
+            <td>{{ item.P_Type }}</td>
+            <td>{{ item.P_Stock }}</td>
+            <td>{{ item.cost }}</td>
+            <td>{{ item.R_date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
 {%endblock%}

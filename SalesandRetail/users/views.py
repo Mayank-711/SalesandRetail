@@ -6,7 +6,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='login')
 def HomePage(request):
-    return render(request,'inventory/dashboard.html')
+    current_user = request.user
+    user_id=current_user.username
+    context = {"user_id":user_id}
+    return render(request,'inventory/dashboard.html',context=context)
 
 def SignupPage(request):
     if request.method =='POST':
