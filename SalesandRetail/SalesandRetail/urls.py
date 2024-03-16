@@ -26,5 +26,5 @@ urlpatterns = [
     path('dashboard/',views.HomePage,name='dashboard'),
     path('logout/',views.LogoutPage,name ='logout'),
     path('dashboard/',iviews.Dashboard,name='dashboard'),
-    path('inventory/',iviews.Inventory,name='inventory'),
+    path('inventory/',iviews.inventory,name='inventory'),
 ]
