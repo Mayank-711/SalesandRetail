@@ -36,7 +36,7 @@
       </form>
     </div>
     <div class="col-md-9">
-      <div class="shadow p-4 mb-5 bg-white rounded" style="width: calc(100% - 300px);">
+      <div class="shadow p-4 mb-5 bg-white rounded" style="width: calc(100% - 300px); overflow-y: auto; max-height: 400px;">
         <h2 class="text-center mb-3">INVENTORY STATUS</h2>
         <div class="InventoryStatus">
           <table class="table table-bordered table-hover">
@@ -51,23 +51,22 @@
               </tr>
             </thead>
             <tbody>
-                {% for item in Inventory %}
-                {% if item.username == user.username %}
-                    <tr>
-                        <td>{{ item.p_Name }}</td>
-                        <td>{{ item.P_Type }}</td>
-                        <td>{{ item.P_Brand }}</td>
-                        <td>{{ item.P_Stock }}</td>
-                        <td>{{ item.cost }}</td>
-                        <td>{{ item.R_date }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
+              {% for item in Inventory %}
+              {% if item.username == user.username %}
+              <tr>
+                <td>{{ item.p_Name }}</td>
+                <td>{{ item.P_Type }}</td>
+                <td>{{ item.P_Brand }}</td>
+                <td>{{ item.P_Stock }}</td>
+                <td>{{ item.cost }}</td>
+                <td>{{ item.R_date }}</td>
+              </tr>
+              {% endif %}
+              {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  </div>
-</div>
+    
 {% endblock %}
