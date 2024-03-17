@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from .models import *
 from django.http import JsonResponse
 from django.db.models import F
-import plotly.graph_objs as go
+import plotly
 # Create your views here. 
 
 
@@ -30,12 +30,11 @@ def inventory(request):
             Inventory.objects.create(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand, P_Stock=P_Stock, R_date=R_date, cost=cost) 
         return redirect("inventory")
     
-    queryset = Inventory.objects.filter(username=username)
+    queryset = Inventory.objects.filter(username=username).order_by('-R_date')
     context = {"Inventory": queryset}
     return render(request, 'inventory/inventory.html', context=context)
 
 def Dashboard(request):
-    
     return render(request,'inventory/dashboard.html')
 
 def SalesPage(request):
