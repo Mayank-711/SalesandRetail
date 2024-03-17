@@ -42,21 +42,38 @@ def SalesPage(request):
     producttype = Inventory.objects.filter(username=username).values('P_Type').distinct()
     btype = Inventory.objects.filter(username=username).values('P_Brand').distinct()
     ntype = Inventory.objects.filter(username=username).values('p_Name').distinct()
-    if request.method=="POST":
-        data=request.POST
-        customer_name=data.get('cname')
-        customer_email=data.get('cmail')
-        PS_Type=data.get("stype")
-        PS_Name=data.get("sname")
-        PS_Brand=data.get("sbrand")
-        QuantitySold=data.get("scount")
-        PS_date=data.get("sellingDate")
-        SellingPrice=data.get("sellingPrice")
-        Sales.objects.create(username=username,PS_Type=PS_Type,PS_Name=PS_Name,PS_Brand=PS_Brand,QuantitySold=QuantitySold,PS_Date=PS_date,SellingPrice=SellingPrice,customer_name=customer_name,customer_email=customer_email) 
+    
+    if request.method == "POST":
+        data = request.POST
+        customer_name = data.get('cname')
+        customer_email = data.get('cmail')
+        PS_Type = data.get("stype")
+        PS_Name = data.get("sname")
+        PS_Brand = data.get("sbrand")
+        QuantitySold = data.get("scount")
+        PS_date = data.get("sellingDate")
+        SellingPrice = data.get("sellingPrice")
+        
+        # Create a new sales record
+        Sales.objects.create(
+            username=username,
+            PS_Type=PS_Type,
+            PS_Name=PS_Name,
+            PS_Brand=PS_Brand,
+            QuantitySold=QuantitySold,
+            PS_Date=PS_date,
+            SellingPrice=SellingPrice,
+            customer_name=customer_name,
+            customer_email=customer_email
+        ) 
+        
+        # Update the inventory
         Inventory.objects.filter(username=username, P_Type=PS_Type, P_Brand=PS_Brand, p_Name=PS_Name).update(
-        P_Stock=F('P_Stock') - int(QuantitySold)
+            P_Stock=F('P_Stock') - int(QuantitySold)
         )
+        
         return redirect("sales")
-    qset  = Sales.objects.all().order_by('-PS_Date')[:25]
-    context = {'ptypes':producttype,'brandtypes':btype,'pnames':ntype,"Sales":qset}
-    return render(request,'inventory/sales.html',context=context)
+    
+    qset = Sales.objects.all().order_by('-PS_Date')[:25]
+    context = {'ptypes': producttype, 'brandtypes': btype, 'pnames': ntype, "Sales": qset}
+    return render(request, 'inventory/sales.html', context=context)
