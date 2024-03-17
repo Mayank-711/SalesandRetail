@@ -48,6 +48,6 @@ def SalesPage(request):
         P_Stock=F('P_Stock') - int(QuantitySold)
         )
         return redirect("sales")
-    qset  = Sales.objects.all()
+    qset  = Sales.objects.all().order_by('-PS_Date')[:25]
     context = {'ptypes':producttype,'brandtypes':btype,'pnames':ntype,"Sales":qset}
     return render(request,'inventory/sales.html',context=context)
