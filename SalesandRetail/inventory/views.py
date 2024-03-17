@@ -10,19 +10,28 @@ from django.db.models import F
 def inventory(request):
     user = request.user 
     username = user.username
-    if request.method=="POST":
-        data=request.POST
-        P_Type=data.get("typeofproduct")
-        p_Name=data.get("nameofproduct")
-        P_Brand=data.get("brand")
-        P_Stock=data.get("stock")
-        R_date=data.get("rdate")
-        cost=data.get("costprice")
-        Inventory.objects.create(username=username,P_Type=P_Type,p_Name=p_Name,P_Brand=P_Brand,P_Stock=P_Stock,R_date=R_date,cost=cost) 
+    if request.method == "POST":
+        data = request.POST
+        P_Type = data.get("typeofproduct")
+        p_Name = data.get("nameofproduct")
+        P_Brand = data.get("brand")
+        P_Stock = data.get("stock")
+        R_date = data.get("rdate")
+        cost = data.get("costprice")
+        
+        existing_inventory = Inventory.objects.filter(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand).first()
+        if existing_inventory:
+            existing_inventory.P_Stock = existing_inventory.P_Stock + int(P_Stock)
+            existing_inventory.R_date = R_date
+            existing_inventory.cost = cost
+            existing_inventory.save()
+        else:
+            Inventory.objects.create(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand, P_Stock=P_Stock, R_date=R_date, cost=cost) 
         return redirect("inventory")
-    queryset=Inventory.objects.all()
-    context={"Inventory":queryset}
-    return render(request,'inventory/inventory.html',context=context)
+    
+    queryset = Inventory.objects.filter(username=username)
+    context = {"Inventory": queryset}
+    return render(request, 'inventory/inventory.html', context=context)
 
 def Dashboard(request):
     return render(request,'inventory/dashboard.html')

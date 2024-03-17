@@ -6,7 +6,7 @@
     <div class="col-md-6">
       <form method="post">
         {% csrf_token %}
-        <div class="shadow p-3 mb-5 bg-white rounded" style="max-width: 600px;">
+        <div class="shadow p-3 mb-5 bg-white rounded" style="max-width: 500px;">
           <h2 class="text-center mb-3">ADD SALES</h2>
           <div class="row">
             <div class="col">
@@ -17,18 +17,24 @@
             </div>
           </div>
           <label for="stype" class="form-label">Type of Product</label>
-          <select id="stype" class="form-select mb-3" aria-label="Type of Product" name="stype">
-            {% for ptype in ptypes %}
-            <option value="{{ ptype.P_Type }}">{{ ptype.P_Type }}</option>
-            {% endfor %}
-          </select>
+          <div class="input-group mb-3">
+            <select id="stype" class="form-select" aria-label="Type of Product" name="stype">
+              {% for ptype in ptypes %}
+              <option value="{{ ptype.P_Type }}">{{ ptype.P_Type }}</option>
+              {% endfor %}
+            </select>
+            <button type="button" class="btn btn-outline-secondary" id="searchByType">Search</button>
+          </div>
           
           <label for="sbrand" class="form-label">Brand</label>
-          <select id="sbrand" class="form-select mb-3" aria-label="Brand" name="sbrand"> 
-            {% for btype in brandtypes %}
-            <option value="{{ btype.P_Brand }}">{{ btype.P_Brand }}</option>
-            {% endfor %}
-          </select>
+          <div class="input-group mb-3">
+            <select id="sbrand" class="form-select" aria-label="Brand" name="sbrand"> 
+              {% for btype in brandtypes %}
+              <option value="{{ btype.P_Brand }}">{{ btype.P_Brand }}</option>
+              {% endfor %}
+            </select>
+            <button type="button" class="btn btn-outline-secondary" id="searchByBrand">Search</button>
+          </div>
           
           <label for="sname" class="form-label">Name</label>
           <select id="sname" class="form-select mb-3" aria-label="Name" name="sname"> 
@@ -52,7 +58,7 @@
             <input type="text" class="form-control" id="sellingPrice" placeholder="Selling Price" name="sellingPrice">
           </div>
           
-          <button type="submit" class="btn btn-secondary d-block mx-auto">Add to Cart</button>
+          <button type="submit" class="btn btn-secondary d-block mx-auto">SELL</button>
         </div>
       </form>
     </div>
@@ -89,5 +95,6 @@
         </div>
       </div>
     </div>
-    
+  </div>
+</div>
 {% endblock %}
