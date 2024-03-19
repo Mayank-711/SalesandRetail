@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from .models import *
 from django.http import JsonResponse
-from django.db.models import F,Q,Sum
+from django.db.models import F,Q,Sum,Avg
 from django.contrib import messages
 from datetime import datetime, timedelta
+from decimal import Decimal
+import plotly.graph_objs as go
 # import plotlib
 # Create your views here. 
 
@@ -13,13 +15,70 @@ from datetime import datetime, timedelta
 
 def salesDashboard(request):
     user = request.user
-    print(user)
     username = user.username
     thirty_days_ago = datetime.now() - timedelta(days=30)
-    print(username)
-    print(thirty_days_ago)
-    sales_30d_total = Sales.objects.filter(PS_date__gte=thirty_days_ago,username=username).aggregate(total_sales_30d=Sum('SellingPrice'))
-    context = {"total_sales_30d":sales_30d_total}
+    
+
+    sales_30d_total = Sales.objects.filter(PS_Date__gte=thirty_days_ago, username=username).aggregate(total_sales_30d=Sum('SellingPrice'))
+
+    cost_price_30d_total = Inventory.objects.filter(R_date__gte=thirty_days_ago, username=username).annotate(total_cost=F('cost') * F('P_Stock')).aggregate(total_cost_price_30d=Sum('total_cost'))
+
+    profit_30d_total = sales_30d_total['total_sales_30d'] - cost_price_30d_total['total_cost_price_30d']
+
+    total_items_in_stock = Inventory.objects.filter(username=username).aggregate(total_items=Sum('P_Stock'))
+
+    distinct_customers_30d_count = Sales.objects.filter(PS_Date__gte=thirty_days_ago, username=username).values('customer_name').distinct().count()
+    
+    avg_selling_price_30d = Sales.objects.filter(PS_Date__gte=thirty_days_ago, username=username).aggregate(avg_selling_price_30d=Avg('SellingPrice'))
+    avg_selling_price_30d = avg_selling_price_30d['avg_selling_price_30d']
+    avg_selling_price_30d = "{:.2f}".format(avg_selling_price_30d)
+
+    sales_data = Sales.objects.filter(PS_Date__gte=thirty_days_ago,username=username)
+    product_sales = {}
+    for sale in sales_data:
+        product_name = sale.PS_Name
+        quantity_sold = sale.QuantitySold
+        if product_name in product_sales:
+            product_sales[product_name] += quantity_sold
+        else:
+            product_sales[product_name] = quantity_sold
+    top_5_products = sorted(product_sales.items(), key=lambda x: x[1], reverse=True)[:5]
+    product_names = [item[0] for item in top_5_products]
+    sales_quantities = [item[1] for item in top_5_products]
+    graph_data = [go.Bar(x=product_names, y=sales_quantities)]
+    graph_layout = go.Layout(title='Top 5 Products Sold in Last 30 Days', xaxis=dict(title='Product'), yaxis=dict(title='Quantity Sold'))
+    graph_figure = go.Figure(data=graph_data, layout=graph_layout)
+    graph_html = graph_figure.to_html(full_html=False, default_height=500, default_width=700)
+
+    inventory_items = Inventory.objects.filter(username=username)
+    brand_counts = {}
+    total_items = 0
+    for item in inventory_items:
+        brand = item.P_Brand
+        if brand in brand_counts:
+            brand_counts[brand] += 1
+        else:
+            brand_counts[brand] = 1
+        total_items += 1
+    brand_percentage = {brand: (count / total_items) * 100 for brand, count in brand_counts.items()}
+    labels = list(brand_percentage.keys())
+    values = list(brand_percentage.values())
+    trace = go.Pie(labels=labels, values=values, hole=0.3)
+    layout = go.Layout(title='Brand-wise Inventory Distribution')
+    fig = go.Figure(data=[trace], layout=layout)
+    graph1_html = fig.to_html(full_html=False)
+
+
+    context = {
+        "total_sales_30d": sales_30d_total,
+        "total_cost_price_30d": cost_price_30d_total,
+        "profit_30d_total": profit_30d_total,
+        "total_item_in_stock":total_items_in_stock,
+        "distinct_customers_30d_count": distinct_customers_30d_count,
+        "avg_selling_price_30d": avg_selling_price_30d,
+        'graph_html': graph_html,
+        'graph1_html':graph1_html,
+    }
     return render(request,'inventory/dashboard.html',context=context)
 
 

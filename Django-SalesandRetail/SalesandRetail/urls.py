@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.LoginPage,name='login'),
     path('signup/',views.SignupPage,name='signup'),
-    path('dashboard/',views.HomePage,name='dashboard'),
     path('logout/',views.LogoutPage,name ='logout'),
     path('dashboard/',iviews.salesDashboard,name='dashboard'),
     path('inventory/',iviews.inventory,name='inventory'),

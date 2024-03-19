@@ -1,18 +1,64 @@
 {% extends 'inventory/base.html' %}
 {%block content%}
-<h1> Dashboard</h1>
-<div class="container">
+<div class="container" style="background-color: gray; color: white; margin-top: 20px;">
     <div class="row">
-        <div class="col-md-6 mx-auto">
-            <div class="card bg-success text-white">
+        <div class="col-12">
+            <h3 class="text-center mt-4 mb-3">Last 30 Days</h3>
+            <hr class="bg-white">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3" style="border-right: 1px solid white;">
+            <div class="card text-white" style="background-color: gray; border-width: 0px;">
                 <div class="card-body">
-                    <h5 class="card-title">Last 30 Days Sales</h5>
-                    <p class="card-text">
-                        Total Sales: {{ total_sales_30d }}Rs
-                    </p>
+                    <h5 class="card-title">Total Sales</h5>
+                    <p class="card-text">{{ total_sales_30d.total_sales_30d }}</p>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="col-md-3" style="border-right: 1px solid white;">
+            <div class="card text-white" style="background-color: gray; border-width: 0px;border-width: 0px;">
+                <div class="card-body">
+                    <h5 class="card-title">Customers</h5>
+                    <p class="card-text">{{ distinct_customers_30d_count }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3" style="border-right: 1px solid white;">
+            <div class="card text-white" style="background-color: gray; border-width: 0px;">
+                <div class="card-body">
+                    <h5 class="card-title">Total Profit</h5>
+                    <p class="card-text">{{ profit_30d_total }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white" style="background-color: gray; border-width: 0px;">
+                <div class="card-body">
+                    <h5 class="card-title">Average Selling Price</h5>
+                    <p class="card-text">{{ avg_selling_price_30d }}</p>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    {{ graph_html|safe }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    {{ graph1_html|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
 {%endblock%}
