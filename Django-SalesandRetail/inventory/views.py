@@ -4,9 +4,15 @@ from django.contrib.auth import authenticate
 from .models import *
 from django.http import JsonResponse
 from django.db.models import F
+from django.contrib import messages
 # import plotlib
 # Create your views here. 
 
+
+
+
+def Dashboard(request):
+    return render(request,'inventory/dashboard.html')
 
 def inventory(request):
     user = request.user 
@@ -20,22 +26,21 @@ def inventory(request):
         R_date = data.get("rdate")
         cost = data.get("costprice")
         P_Size = data.get('shoesize')
-        existing_inventory = Inventory.objects.filter(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand,P_Size = P_Size).first()
+        existing_inventory = Inventory.objects.filter(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand, P_Size=P_Size).first()
         if existing_inventory:
-            existing_inventory.P_Stock = existing_inventory.P_Stock + int(P_Stock)
+            existing_inventory.P_Stock += int(P_Stock)
             existing_inventory.R_date = R_date
             existing_inventory.cost = cost
             existing_inventory.save()
+            messages.success(request, f'Inventory for {p_Name} updated successfully.')
         else:
-            Inventory.objects.create(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand, P_Stock=P_Stock, R_date=R_date, cost=cost,P_Size=P_Size) 
+            Inventory.objects.create(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand, P_Stock=P_Stock, R_date=R_date, cost=cost, P_Size=P_Size)
+            messages.success(request, f'New inventory for {p_Name} added successfully.')
         return redirect("inventory")
     
     queryset = Inventory.objects.filter(username=username).order_by('-R_date')
     context = {"Inventory": queryset}
     return render(request, 'inventory/inventory.html', context=context)
-
-def Dashboard(request):
-    return render(request,'inventory/dashboard.html')
 
 def SalesPage(request):
     user = request.user 
@@ -66,16 +71,18 @@ def SalesPage(request):
             SellingPrice=SellingPrice,
             customer_name=customer_name,
             customer_email=customer_email,
-            PS_Size = PS_Size
+            PS_Size=PS_Size
         ) 
         
         # Update the inventory
-        Inventory.objects.filter(username=username, P_Type=PS_Type, P_Brand=PS_Brand, p_Name=PS_Name,P_Size=PS_Size).update(
+        Inventory.objects.filter(username=username, P_Type=PS_Type, P_Brand=PS_Brand, p_Name=PS_Name, P_Size=PS_Size).update(
             P_Stock=F('P_Stock') - int(QuantitySold)
         )
+        
+        messages.success(request, f'Sales for {PS_Name} added successfully.')
         
         return redirect("sales")
     
     qset = Sales.objects.all().order_by('-PS_Date')[:25]
-    context = {'ptypes': producttype, 'brandtypes': btype, 'pnames': ntype, "Sales": qset,"Ssize":ssize}
+    context = {'ptypes': producttype, 'brandtypes': btype, 'pnames': ntype, "Sales": qset, "Ssize": ssize}
     return render(request, 'inventory/sales.html', context=context)
