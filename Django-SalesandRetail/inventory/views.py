@@ -3,9 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from .models import *
 from django.http import JsonResponse
-from django.db.models import F,Count
-import plotly.graph_objs as go
-
+from django.db.models import F
+# import plotlib
 # Create your views here. 
 
 
@@ -36,11 +35,7 @@ def inventory(request):
     return render(request, 'inventory/inventory.html', context=context)
 
 def Dashboard(request):
-    user = request.user 
-    username = user.username
-    context={
-    }
-    return render(request,'inventory/dashboard.html',context=context)
+    return render(request,'inventory/dashboard.html')
 
 def SalesPage(request):
     user = request.user 
