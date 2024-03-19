@@ -3,16 +3,25 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from .models import *
 from django.http import JsonResponse
-from django.db.models import F
+from django.db.models import F,Q,Sum
 from django.contrib import messages
+from datetime import datetime, timedelta
 # import plotlib
 # Create your views here. 
 
 
 
+def salesDashboard(request):
+    user = request.user
+    print(user)
+    username = user.username
+    thirty_days_ago = datetime.now() - timedelta(days=30)
+    print(username)
+    print(thirty_days_ago)
+    sales_30d_total = Sales.objects.filter(PS_date__gte=thirty_days_ago,username=username).aggregate(total_sales_30d=Sum('SellingPrice'))
+    context = {"total_sales_30d":sales_30d_total}
+    return render(request,'inventory/dashboard.html',context=context)
 
-def Dashboard(request):
-    return render(request,'inventory/dashboard.html')
 
 def inventory(request):
     user = request.user 

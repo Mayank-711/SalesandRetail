@@ -1,5 +1,18 @@
 {% extends 'inventory/base.html' %}
 {%block content%}
 <h1> Dashboard</h1>
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Last 30 Days Sales</h5>
+                    <p class="card-text">
+                        Total Sales: {{ total_sales_30d }}Rs
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {%endblock%}
