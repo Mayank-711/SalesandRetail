@@ -19,15 +19,15 @@ def inventory(request):
         P_Stock = data.get("stock")
         R_date = data.get("rdate")
         cost = data.get("costprice")
-        
-        existing_inventory = Inventory.objects.filter(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand).first()
+        P_Size = data.get('shoesize')
+        existing_inventory = Inventory.objects.filter(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand,P_Size = P_Size).first()
         if existing_inventory:
             existing_inventory.P_Stock = existing_inventory.P_Stock + int(P_Stock)
             existing_inventory.R_date = R_date
             existing_inventory.cost = cost
             existing_inventory.save()
         else:
-            Inventory.objects.create(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand, P_Stock=P_Stock, R_date=R_date, cost=cost) 
+            Inventory.objects.create(username=username, P_Type=P_Type, p_Name=p_Name, P_Brand=P_Brand, P_Stock=P_Stock, R_date=R_date, cost=cost,P_Size=P_Size) 
         return redirect("inventory")
     
     queryset = Inventory.objects.filter(username=username).order_by('-R_date')
