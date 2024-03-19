@@ -22,4 +22,5 @@ class Sales(models.Model):
     QuantitySold=models.IntegerField()
     PS_Date=models.DateField(null=True,blank=True)
     SellingPrice=models.IntegerField()
+    PS_Size = models.IntegerField(default = 8)
 

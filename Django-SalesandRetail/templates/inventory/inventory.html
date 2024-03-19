@@ -58,18 +58,19 @@
         </div>
       </form>
     </div>
-    <div class="col-md-6" style="margin-left: -100px;"">
-      <div class="shadow p-4 mb-3 bg-white rounded" style="width: 100%; overflow-y: auto; max-height: 400px;">
+    <div class="col-md-6" style="margin-left: -200px;">
+      <div class="shadow p-4 mb-3 bg-white rounded" style="width: 120%; overflow-y: auto; max-height: 400px;">
         <h2 class="text-center mb-3">INVENTORY STATUS</h2>
         <div class="InventoryStatus">
           <table class="table table-bordered table-hover">
             <thead style="background-color: gray;">
               <tr>
-                <th>P_Type</th>
-                <th>P_Brand</th>
-                <th>P_Name</th>
-                <th>P_Size</th>
-                <th>Cost</th>
+                <th>Type Of Product</th>
+                <th>Brand of Product</th>
+                <th>Name of Product</th>
+                <th>Size</th>
+                <th>Stock</th>
+                <th>Cost Price</th>
                 <th>Last Receiving-Date</th>
               </tr>
             </thead>
@@ -81,6 +82,7 @@
                 <td>{{ item.P_Brand }}</td>
                 <td>{{ item.p_Name }}</td>
                 <td>{{ item.P_Size }}</td>
+                <td>{{ item.P_Stock}}</td>
                 <td>{{ item.cost }}</td>
                 <td>{{ item.R_date }}</td>
               </tr>

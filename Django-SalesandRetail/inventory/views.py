@@ -43,7 +43,7 @@ def SalesPage(request):
     producttype = Inventory.objects.filter(username=username).values('P_Type').distinct()
     btype = Inventory.objects.filter(username=username).values('P_Brand').distinct()
     ntype = Inventory.objects.filter(username=username).values('p_Name').distinct()
-    
+    ssize = Inventory.objects.filter(username=username).values('P_Size').distinct()
     if request.method == "POST":
         data = request.POST
         customer_name = data.get('cname')
@@ -54,7 +54,7 @@ def SalesPage(request):
         QuantitySold = data.get("scount")
         PS_date = data.get("sellingDate")
         SellingPrice = data.get("sellingPrice")
-        
+        PS_Size = data.get('Ssize')
         # Create a new sales record
         Sales.objects.create(
             username=username,
@@ -65,16 +65,17 @@ def SalesPage(request):
             PS_Date=PS_date,
             SellingPrice=SellingPrice,
             customer_name=customer_name,
-            customer_email=customer_email
+            customer_email=customer_email,
+            PS_Size = PS_Size
         ) 
         
         # Update the inventory
-        Inventory.objects.filter(username=username, P_Type=PS_Type, P_Brand=PS_Brand, p_Name=PS_Name).update(
+        Inventory.objects.filter(username=username, P_Type=PS_Type, P_Brand=PS_Brand, p_Name=PS_Name,P_Size=PS_Size).update(
             P_Stock=F('P_Stock') - int(QuantitySold)
         )
         
         return redirect("sales")
     
     qset = Sales.objects.all().order_by('-PS_Date')[:25]
-    context = {'ptypes': producttype, 'brandtypes': btype, 'pnames': ntype, "Sales": qset}
+    context = {'ptypes': producttype, 'brandtypes': btype, 'pnames': ntype, "Sales": qset,"Ssize":ssize}
     return render(request, 'inventory/sales.html', context=context)
