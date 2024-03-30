@@ -19,7 +19,7 @@
               <a class="nav-link active" aria-current="page" href="{% url 'inventory'%}">Inventory</a>
               <a class="nav-link active" aria-current="page" href="{% url 'sales'%}">Sales</a>
               <a class="nav-link active" aria-current="page" href="{% url 'logout'%}">Logout</a>
-              <a class="nav-link active" aria-current="page" href="#" style="color: white; padding-left: 900px;">&#128100;: {{ user.username }}</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'profile'%}" style="color: white; padding-left: 900px;">&#128100;: {{ user.username }}</a>
             </div>
           </div>
         </div>

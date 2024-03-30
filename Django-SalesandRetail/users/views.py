@@ -8,6 +8,8 @@ import uuid
 from .models import Profile
 from .utils import send_email_to_client
 import uuid
+from .forms import UserUpdateForm,ProfileUpdateForm
+import re
 # Create your views here.
 @login_required(login_url='login')
 def HomePage(request):
@@ -18,37 +20,52 @@ def HomePage(request):
 
 def SignupPage(request):
     try:
-        if request.method =='POST':
+        if request.method == 'POST':
             username = request.POST.get('username')
-            email=request.POST.get('email')
+            email = request.POST.get('email')
             pass1 = request.POST.get('password1')
             pass2 = request.POST.get('password2')
             try:
-                if pass1!= pass2:
-                    messages.info(request, "Password and Confirm Password are not Same.")
+                # Password validation
+                if pass1 != pass2:
+                    messages.info(request, "Password and Confirm Password are not the same.")
                     return redirect("signup")
-                user=User.objects.filter(username=username)
+                if len(pass1) < 8:
+                    messages.info(request, "Password should be at least 8 characters long.")
+                    return redirect("signup")
+                if not re.search(r'[0-9]', pass1):
+                    messages.info(request, "Password should contain at least one number.")
+                    return redirect("signup")
+                if not re.search(r'[!@#$%^&*()_+=\-[\]{};:\'",.<>?]', pass1):
+                    messages.info(request, "Password should contain at least one symbol.")
+                    return redirect("signup")
+
+                user = User.objects.filter(username=username)
                 if user.exists():
-                    messages.info(request, "User with same username already exists.")
+                    messages.info(request, "User with the same username already exists.")
                     return redirect("signup")
-                user=User.objects.filter(email=email)
+                    
+                user = User.objects.filter(email=email)
                 if user.exists():
                     messages.info(request, "Email already exists.")
                     return redirect("signup")
+                    
                 else:
-                    my_user = User.objects.create_user(username,email,pass1)
+                    my_user = User.objects.create_user(username, email, pass1)
                     my_user.save()
-                    messages.info(request, "Account created successfully.please login to continue.")
-                profile_obj=Profile.objects.create(user=my_user)
+                    messages.info(request, "Account created successfully. Please login to continue.")
+                    
+                profile_obj = Profile.objects.create(user=my_user)
                 profile_obj.save()
                 return redirect('login')
-   
+
             except Exception as e:
-                print(e)  
+                print(e)
     except Exception as e:
         print(e)
 
-    return render(request,'users/signup.html')
+    return render(request, 'users/signup.html')
+
 
 def LoginPage(request):
     try:    
@@ -97,6 +114,15 @@ def ChangePassword(request,token):
             if new_password!=confirm_password:
                 messages.error(request,"Password does not match with above")
                 return redirect(f"/ChangePassword/{token}/")
+            if len(new_password) < 8:
+                messages.info(request, "Password should be at least 8 characters long.")
+                return redirect("f"/ChangePassword/{token}/"")
+            if not re.search(r'[0-9]', new_password):
+                messages.info(request, "Password should contain at least one number.")
+                return redirect("f"/ChangePassword/{token}/"")
+            if not re.search(r'[!@#$%^&*()_+=\-[\]{};:\'",.<>?]', new_password):
+                messages.info(request, "Password should contain at least one symbol.")
+                return redirect("f"/ChangePassword/{token}/"")
             
             user_obj=User.objects.get(id=user_id)
             user_obj.set_password(new_password)
@@ -129,3 +155,28 @@ def ForgotPassword(request):
     except Exception as e:
         print(e) 
     return render(request,"users/ForgotPassword.html")
+
+
+
+@login_required(login_url='login')
+def ProfilePage(request):
+    user=request.user
+    return render(request,"users/profile.html",{'user':user})
+
+@login_required(login_url='login')
+def profile_update(request):
+    try:
+        if request.method == 'POST':
+            form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile_photo)
+            if form.is_valid():
+                form.save()
+                return redirect('profile')
+            else:
+                print("Form errors:", form.errors)
+        else:
+            form = ProfileUpdateForm(instance=request.user.profile_photo)
+    except Exception as e:
+        print(e)
+    return render(request, 'users/profile_update.html',{'form': form})
+
+

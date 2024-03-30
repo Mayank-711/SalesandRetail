@@ -16,6 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 from users import views
 from inventory import views as iviews
 
@@ -29,4 +32,9 @@ urlpatterns = [
     path('sales/',iviews.SalesPage,name='sales'),
     path("ChangePassword/<token>/",views.ChangePassword,name="ChangePassword"),
     path("ForgotPassword",views.ForgotPassword,name="ForgotPassword"),
-]
+    path("profile/",views.ProfilePage,name="profile"),
+    path("profile/profile_update/",views.profile_update,name="profile_update"),
+    path('profile/', views.ProfilePage, name='profile'),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
