@@ -143,3 +143,99 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'abhishekkumbhar005@gmail.com'
 EMAIL_HOST_PASSWORD = 'vgox lfcm oeek pxeq'
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from django.shortcuts import render,redirect,get_object_or_404
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth import authenticate
+# from .models import *
+# from django.http import JsonResponse
+# from django.db.models import F,Q,Sum,Avg
+# from django.contrib import messages
+# from datetime import datetime, timedelta
+# from decimal import Decimal
+# import plotly.graph_objs as go
+# # import plotlib
+# # Create your views here. 
+# from django.shortcuts import render,redirect,get_object_or_404
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth import authenticate
+# from .models import *
+# from django.http import JsonResponse
+# from django.db.models import F,Q,Sum,Avg
+# from django.contrib import messages
+# from datetime import datetime, timedelta
+# from decimal import Decimal
+# import plotly.graph_objs as go
+# # import plotlib
+# # Create your views here. 
+# from django.shortcuts import render,redirect,get_object_or_404
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth import authenticate
+# from .models import *
+# from django.http import JsonResponse
+# from django.db.models import F,Q,Sum,Avg
+# from django.contrib import messages
+# from datetime import datetime, timedelta
+# from decimal import Decimal
+# import plotly.graph_objs as go
+# # import plotlib
+# # Create your views here. 
+
+
+# from django.shortcuts import render,redirect,get_object_or_404
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth import authenticate
+# from .models import *
+# from django.http import JsonResponse
+# from django.db.models import F,Q,Sum,Avg
+# from django.contrib import messages
+# from datetime import datetime, timedelta
+# from decimal import Decimal
+# import plotly.graph_objs as go
+# # import plotlib
+# # Create your views here. 

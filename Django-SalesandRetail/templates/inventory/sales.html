@@ -46,7 +46,7 @@
               </select>
             </div>
             <div class="col">
-              <label for="shoeSize" class="form-label">Shoe Size</label>
+              <label for="shoeSize" class="form-label">Size</label>
               <select class="form-select" id="shoeSize" name="Ssize" required>
                 {% for ss in Ssize %}
                 <option value="{{ ss.P_Size }}">{{ ss.P_Size }}</option>
@@ -74,7 +74,7 @@
         </div>
       </form>
     </div>
-    <div class="col-md-6" style="margin-left: -150px;">
+    <div class="col-md-7" style="margin-left: -150px;">
       <div class="shadow p-4 mb-5 bg-white rounded" style="width: 100%;">
         <h2 class="text-center mb-3">LAST 25 SALES</h2>
         <div class="InventoryStatus" style="max-height: 500px; overflow-y: auto;">
@@ -88,6 +88,7 @@
                 <th>Quantity</th>
                 <th>Selling Price</th>
                 <th>Selling Date</th>
+                <th>Customer Name</th>
               </tr>
             </thead>
             <tbody>
@@ -101,6 +102,7 @@
                 <td>{{ item.QuantitySold }}</td>
                 <td>{{ item.SellingPrice }}</td>
                 <td>{{ item.PS_Date }}</td>
+                <td>{{ item.customer_name }}</td>
               </tr>
               {% endif %}
               {% endfor %}
