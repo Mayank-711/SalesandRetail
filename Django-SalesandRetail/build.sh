@@ -1,4 +1,4 @@
 set -o errexit
-pip install -r requirements.txt
-python manage.py collectstatic --no-input
-python manage.py migrate
+pip install -r SalesandRetail/requirements.txt
+python SalesandRetail/manage.py collectstatic --no-input
+python SalesandRetail/manage.py migrate
