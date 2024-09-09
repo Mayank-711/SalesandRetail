@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 
-# MEDIA_ROOT=(BASE_DIR / 'media')
+MEDIA_ROOT=(BASE_DIR / 'media' / 'profile_images')
 
 
 MEDIA_URL='/media/'
